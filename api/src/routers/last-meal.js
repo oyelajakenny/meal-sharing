@@ -1,12 +1,16 @@
 import express from "express";
 import knex from "../database_client.js";
 
-// This router can be deleted once you add your own router
 const lastMealRouter = express.Router();
 
 lastMealRouter.get("/", async (req, res) => {
-const lastMeal = await knex("meal").orderBy("id", "desc").first();
-  res.json(lastMeal);
+  try{
+    const lastMeal = await knex("meal").orderBy("id", "desc").first();
+    res.json(lastMeal);
+  }
+  catch(error){
+    res.status(404).json({ error: "No meal found" });
+  }
 });
 
 export default lastMealRouter;
