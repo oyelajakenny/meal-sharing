@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 const apiRouter = express.Router();
 
 apiRouter.get("/", async (req, res) => {
-  res.send("<h1>Welcome to the Meal Sharing App</h1>");
+  res.send("<h1>Welcome to the </h1>");
 });
 
 app.use("/api", apiRouter);
