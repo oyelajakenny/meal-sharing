@@ -19,7 +19,7 @@ mealsRouter.post("/", async (req, res, next) => {
   }
 });
 
-mealsRouter.get("/meals/:id", async (req, res) => {
+mealsRouter.get("/meals/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
     const meals = await knex("meal").where({ id: id }).first();
@@ -33,24 +33,34 @@ mealsRouter.get("/meals/:id", async (req, res) => {
       meals: meals,
     });
   } catch (error) {
-    res.status(500).json({ error: "Unable to retrieve meal" });
+    next(res.status(500).json({ error: "Unable to retrieve meal" }));
   }
 });
-mealsRouter.put("/:id", async (req, res, next) => {
+
+mealsRouter.put("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const data = req.body;
     await knex("meal").where({ id: id }).update(data);
-    res.status(200).json({ message: "updated successfully" });
+    if (!id) {
+      res.status(404).json({ error: "No ID found" });
+    } else {
+      res.status(200).json({ message: "updated successfully" });
+    }
   } catch (error) {
     res.status(500).json({ error: "Unable to update meal" });
   }
 });
+
 mealsRouter.delete("/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
     await knex("meal").where({ id: id }).del();
-    res.status(200).json({ message: "deleted successfully" });
+    if (!id) {
+      res.status(404).json({ error: "No meal with this ID found" });
+    } else {
+      res.status(200).json({ message: "Meal deleted successfully" });
+    }
   } catch (error) {
     res.status(500).json({ error: "Unable to delete meal" });
   }
