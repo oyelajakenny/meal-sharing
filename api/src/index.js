@@ -8,6 +8,9 @@ import pastMealsRouter from "./routers/past-meals.js";
 import futureMealsRouter from "./routers/future-meals.js";
 import firstMealRouter from "./routers/first-meal.js";
 import lastMealRouter from "./routers/last-meal.js";
+import mealsRouter from "./routers/meals.js";
+import reservationsRouter from "./routers/reservations.js";
+import reviewRouter from "./routers/reviews.js";
 
 const app = express();
 app.use(cors());
@@ -16,13 +19,13 @@ app.use(bodyParser.json());
 const apiRouter = express.Router();
 
 apiRouter.get("/", async (req, res) => {
-  const SHOW_TABLES_QUERY =
-    process.env.DB_CLIENT === "pg"
-      ? "SELECT * FROM pg_catalog.pg_tables;"
-      : "SHOW TABLES;";
-  const tables = await knex.raw(SHOW_TABLES_QUERY);
-  res.json({ tables });
+  res.send("<h1>Welcome to the </h1>");
 });
+
+mealsRouter.get("/", async (req, res) => {
+    const meals = await knex("meal").orderBy("id");
+    res.json(meals);
+})
 
 app.use("/api", apiRouter);
 app.use("/all-meals", allMealsRouter);
@@ -30,6 +33,9 @@ app.use("/past-meals", pastMealsRouter);
 app.use("/future-meals", futureMealsRouter);
 app.use("/first-meal", firstMealRouter);
 app.use("/last-meal", lastMealRouter);
+app.use("/reviews", reviewRouter);
+apiRouter.use("/meals", mealsRouter);
+apiRouter.use("/reservations", reservationsRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`API listening on port ${process.env.PORT}`);
