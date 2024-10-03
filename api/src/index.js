@@ -10,6 +10,7 @@ import firstMealRouter from "./routers/first-meal.js";
 import lastMealRouter from "./routers/last-meal.js";
 import mealsRouter from "./routers/meals.js";
 import reservationsRouter from "./routers/reservations.js";
+import reviewRouter from "./routers/reviews.js";
 
 const app = express();
 app.use(cors());
@@ -21,12 +22,18 @@ apiRouter.get("/", async (req, res) => {
   res.send("<h1>Welcome to the </h1>");
 });
 
+mealsRouter.get("/", async (req, res) => {
+    const meals = await knex("meal").orderBy("id");
+    res.json(meals);
+})
+
 app.use("/api", apiRouter);
 app.use("/all-meals", allMealsRouter);
 app.use("/past-meals", pastMealsRouter);
 app.use("/future-meals", futureMealsRouter);
 app.use("/first-meal", firstMealRouter);
 app.use("/last-meal", lastMealRouter);
+app.use("/reviews", reviewRouter);
 apiRouter.use("/meals", mealsRouter);
 apiRouter.use("/reservations", reservationsRouter);
 
