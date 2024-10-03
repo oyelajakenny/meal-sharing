@@ -15,12 +15,9 @@ reviewRouter.get("/", async (req, res, next) => {
 reviewRouter.get("/:meal_id/reviews", async (req, res) => {
   const { meal_id } = req.params;
   try {
-    const reviews = await knex("review")
-      .where("meal_id", meal_id)
-      .select("id", "description", "stars", "created_date")
-      .orderBy("id");
+    const reviews = await knex("review").where("meal_id", meal_id).select("*");
 
-    if (reviewRouter.length === 0) {
+    if (reviews.length === 0) {
       res.status(404).json({ error: "No review found" });
     }
     res.json(reviews);
@@ -43,7 +40,7 @@ reviewRouter.post("/", async (req, res, next) => {
 reviewRouter.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const review = await knex("review").where({id}).first();
+    const review = await knex("review").where({ id }).first();
     if (!review) {
       res.status(404).json({ error: "No review found" });
     } else {
