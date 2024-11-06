@@ -1,57 +1,73 @@
 import express from "express";
 import knex from "../database_client.js";
 
-const reservationsRouter = express.Router();
+const reservationRouter = express.Router();
 
-reservationsRouter.get("/", async (req, res) => {
-  const reservations = await knex("reservation").orderBy("id");
-  res.json(reservations);
-});
-
-reservationsRouter.post("/", async (req, res, next) => {
+//Returns all reservations
+reservationRouter.get("/", async (req, res, next) => {
   try {
-    console.log(req.body);
-    const data = req.body;
-    await knex("Reservation").insert(data);
-    res.status(201).json({ message: "created successfully" });
+    const reservation = await knex("Reservation");
+    res.json(reservation);
   } catch (error) {
     next(error);
   }
 });
 
-reservationsRouter.get("/reservations/:id", async (req, res) => {
+//Adds a new reservation to the database
+reservationRouter.post("/", async (req, res, next) => {
+  try {
+    const data = req.body;
+    await knex("Reservation").insert(data);
+    res.status(200).json({ message: "created successfully" });
+  } catch (error) {
+    next(error);
+  }
+});
+
+//GET reservations by id
+reservationRouter.get("/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
-    const reservations = await knex("reservation").where({ id: id }).first();
-    if (!reservations) {
-      res.status(404).json({ error: "No reservation found" });
+    const reservation = await knex("Reservation").where("id", id).first();
+    if (!reservation) {
+      res.json({ message: "Reservation not found" });
     } else {
-      res.status(200).json(reservations);
+      res.json(reservation);
     }
   } catch (error) {
-    res.status(500).json({ error: "Unable to get reservation" });
+    next(error);
   }
 });
 
-reservationsRouter.put("/:id", async (req, res) => {
+//Updates the Reservation by id
+reservationRouter.put("/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
-    const data = req.body;
-    await knex("Reservation").where({ id: id }).update(data);
-    res.status(200).json({ message: "updated successfully" });
+    const updatedReservation = req.body;
+    const result = await knex("Reservation").where("id", id).update(updatedReservation);
+    if (result) {
+      res.status(200).json({ message: "Reservation updated successfully" });
+    } else {
+      res.status(404).json({ message: "Reservation not found" });
+    }
   } catch (error) {
-    res.status(500).json({ error: "Unable to update reservation" });
+    next(error);
   }
 });
 
-reservationsRouter.delete("/:id", async (req, res) => {
+//Deletes the Reservation by id
+reservationRouter.delete("/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
-    await knex("Reservation").where({ id: id }).del();
-    res.status(200).json({ message: "deleted successfully" });
+    const deletedReservation = await knex("Reservation").where("id", id).del();
+    if (deletedReservation) {
+      res.status(200).json({ message: "deleted successfully" });
+    } else {
+      res.status(404).json({ message: "Reservation not found" });
+    }
   } catch (error) {
-    res.status(500).json({ error: "Unable to delete reservation" });
+    next(error);
   }
 });
 
-export default reservationsRouter;
+export default reservationRouter;
