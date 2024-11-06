@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 const apiRouter = express.Router();
 
 apiRouter.get("/", async (req, res) => {
-  res.send("<h1>Welcome to the </h1>");
+  res.send("<h1>Welcome to the Meal Sharing app </h1>");
 });
 
 mealsRouter.get("/", async (req, res) => {
@@ -34,8 +34,8 @@ app.use("/future-meals", futureMealsRouter);
 app.use("/first-meal", firstMealRouter);
 app.use("/last-meal", lastMealRouter);
 app.use("/reviews", reviewRouter);
-apiRouter.use("/meals", mealsRouter);
-apiRouter.use("/reservations", reservationsRouter);
+app.use("/meals", mealsRouter);
+app.use("/reservations", reservationsRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`API listening on port ${process.env.PORT}`);
