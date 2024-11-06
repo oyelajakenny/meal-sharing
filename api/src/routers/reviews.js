@@ -18,12 +18,12 @@ reviewRouter.get("/:meal_id/reviews", async (req, res) => {
     const reviews = await knex("review").where("meal_id", meal_id).select("*");
 
     if (reviews.length === 0) {
-      res.status(404).json({ error: "No review found" });
+      res.status(200).json({ error: "No review found" });
     }
     res.json(reviews);
   } catch (error) {
     console.log(error);
-    res.status(505).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
@@ -42,13 +42,13 @@ reviewRouter.get("/:id", async (req, res) => {
   try {
     const review = await knex("review").where({ id }).first();
     if (!review) {
-      res.status(404).json({ error: "No review found" });
+      res.status(200).json({ error: "No review found" });
     } else {
       res.status(200).json(review);
     }
   } catch (error) {
     console.log(error);
-    res.status(505).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
@@ -60,7 +60,7 @@ reviewRouter.put("/:id", async (req, res) => {
     res.status(200).json({ message: "Review updated successfully" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Unable to update review" });
+    res.status(500).json({ error: "Unable to update reviews" });
   }
 });
 
