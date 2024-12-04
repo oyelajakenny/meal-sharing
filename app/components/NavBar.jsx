@@ -17,30 +17,29 @@ const pages = [
   { name: "About Us", path: "/" },
   { name: "Reserve A Meal", path: "/" },
   { name: "Contact", path: "/" },
-  { name: "All Meals", path: "/allmeals" },
+  { name: "All Meals", path: "/meals" },
 ];
-
 const ResponsiveNavbar = () => {
   const router = useRouter();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-
-  // Open menu on small screens
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
 
   // Close menu
+
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
   // Navigate to page on click
+
   const handleNavigate = (path) => {
     handleCloseNavMenu();
     router.push(path);
   };
-
-  return (
+  return(
+  
     <AppBar position="static">
       <Toolbar>
         {/* Brand/Title */}
@@ -50,10 +49,9 @@ const ResponsiveNavbar = () => {
           sx={{ flexGrow: 1, display: { xs: "flex" } }}
         >
           <Link href="/" passHref>
-            Meeshly
+            <img src="/logo.png" alt="Logo" style={{ width: "150px" }} />
           </Link>
         </Typography>
-       
         {/* Menu icon for small screens */}
         <Box sx={{ flexGrow: -5, display: { xs: "flex", md: "none" } }}>
           <IconButton
@@ -84,7 +82,6 @@ const ResponsiveNavbar = () => {
             ))}
           </Menu>
         </Box>
-
         {/* Navbar links for larger screens */}
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
           {pages.map((page) => (
@@ -99,7 +96,7 @@ const ResponsiveNavbar = () => {
         </Box>
       </Toolbar>
     </AppBar>
-  );
+  )
 };
 
 export default ResponsiveNavbar;

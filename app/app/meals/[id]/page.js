@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Typography, Paper, Container, Box, Button } from "@mui/material";
 import ReservationForm from "@/components/ReservationForm";
 import ReviewForm from "@/components/ReviewForm";
+import CompassCalibrationIcon from "@mui/icons-material/CompassCalibration";
 
 function MealDetail() {
   const { id } = useParams();
@@ -37,20 +38,35 @@ function MealDetail() {
         <>
           <Paper elevation={3} sx={{ padding: 2, marginBottom: 3 }}>
             <img src={meal.image_url} alt={meal.title} width="100%" />
+            <Typography>
+              {reviews.length} {reviews.length === 1 ? "Review" : "Reviews"}
+            </Typography>
             <Typography variant="h4" component="h2" gutterBottom>
               {meal.title}
             </Typography>
             <Typography variant="body1" gutterBottom>
               {meal.description}
             </Typography>
-            <Typography variant="h6" gutterBottom>
-              Price: {meal.price} Kr
+            <Typography variant="body2" color="text.secondary">
+              Price:
+              <span
+                style={{ fontWeight: "bold", color: "green", fontSize: "20px" }}
+              >
+                {meal.price} Kr
+              </span>
             </Typography>
-            <Typography variant="h6" gutterBottom>
-              {meal.location}
+            <Typography variant="body2" color="text.secondary">
+              <CompassCalibrationIcon /> {meal.location.toUpperCase()}
             </Typography>
-
-            {meal.max_reservations > 0 ? (
+            <div >
+              <Typography variant="body2" color="text.secondary">
+                Max Reservations: {meal.max_reservations}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Available Spots: {meal.available_spots}
+              </Typography>
+            </div>
+            {meal.available_spots > 0 ? (
               <>
                 <Button
                   variant="contained"
@@ -97,9 +113,9 @@ function MealDetail() {
                   sx={{ marginBottom: 2 }}
                 >
                   <Typography variant="subtitle1">
-                    <strong>{review.name}</strong> rated {review.rating}/5
+                    <strong>{review.title}</strong> rated {review.stars}/5
                   </Typography>
-                  <Typography variant="body2">{review.comment}</Typography>
+                  <Typography variant="body2">{review.description}</Typography>
                 </Box>
               ))
             ) : (

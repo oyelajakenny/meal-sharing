@@ -11,12 +11,15 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@heroicons/react": "^2.2.0",
     "@mui/icons-material": "^6.1.6",
     "@mui/material": "^6.1.6",
+    "axios": "^1.7.8",
     "material-ui-icons": "^1.0.0-beta.36",
     "next": "15.0.3",
     "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106"
+    "react-dom": "19.0.0-rc-66855b96-20241106",
+    "swiper": "^11.1.15"
   },
   "devDependencies": {
     "eslint": "^8",
